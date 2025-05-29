@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "module": "commonjs",                // Required for Jest
+      "moduleResolution": "node",         // Compatible with Jest/Node
+      "jsx": "react-jsx",                 // Ensures JSX works in test files
+      "noEmit": true
+    }
+  }
+  
