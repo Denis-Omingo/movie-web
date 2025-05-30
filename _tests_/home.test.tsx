@@ -15,7 +15,5 @@ describe('Home Page', () => {
   });
 });
 
-test('simulate CI failure', () => {
-  expect(1 + 1).toBe(3); // This will fail
-});
+
 
