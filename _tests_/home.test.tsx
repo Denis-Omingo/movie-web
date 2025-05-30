@@ -14,3 +14,8 @@ describe('Home Page', () => {
     expect(screen.getByRole('button', { name: 'Test button' })).toBeInTheDocument();
   });
 });
+
+test('simulate CI failure', () => {
+  expect(1 + 1).toBe(3); // This will fail
+});
+
