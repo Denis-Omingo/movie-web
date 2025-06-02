@@ -3,6 +3,7 @@ import { Poppins, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Providers from "./Providers";
 import Header from "@/components/Header";
+import Navbar from "@/components/Navbar/Navbar";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
+          <Navbar/>
           {children}
         </Providers>
       </body>
