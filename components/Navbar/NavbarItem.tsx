@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 type NavbarItemProps = {
   title: string
@@ -9,15 +9,13 @@ type NavbarItemProps = {
 }
 
 export default function NavbarItem({ title, param }: NavbarItemProps) {
-  const searchParams = useSearchParams()
-  const genre = searchParams.get('genre')
-
-  const isActive = genre === param
+  const pathname = usePathname()
+  const isActive = pathname.includes(param)
 
   return (
     <Link
-      href={`/?genre=${param}`}
-      className={`font-semibold transition-colors duratio-90 ${
+      href={`/${param}`}
+      className={`font-semibold transition-colors duration-100 ${
         isActive
           ? 'underline underline-offset-8 decoration-4 decoration-primary text-primary'
           : 'hover:text-primary'

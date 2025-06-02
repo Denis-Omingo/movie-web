@@ -1,49 +1,46 @@
+
 import { render, screen } from '@testing-library/react'
 import NavbarItem from '@/components/Navbar/NavbarItem'
-import { useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import '@testing-library/jest-dom'
 
+
 jest.mock('next/navigation', () => ({
-  useSearchParams: jest.fn(),
+  usePathname: jest.fn(),
 }))
 
 describe('NavbarItem', () => {
-  const mockedUseSearchParams = useSearchParams as jest.Mock
+  const mockedUsePathname = usePathname as jest.Mock
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('renders a link with the correct href and title', () => {
-    mockedUseSearchParams.mockReturnValue({
-      get: () => null,
-    })
+  it('renders link with correct text and href', () => {
+    mockedUsePathname.mockReturnValue('/')
 
-    render(<NavbarItem title="Trending" param="fetchTrending" />)
+    render(<NavbarItem title="Trending" param="trending" />)
 
     const link = screen.getByRole('link', { name: 'Trending' })
     expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/?genre=fetchTrending')
+    expect(link).toHaveAttribute('href', '/trending')
   })
 
-  it('adds active class when genre param matches', () => {
-    mockedUseSearchParams.mockReturnValue({
-      get: () => 'fetchTrending',
-    })
+  it('applies active class when pathname includes param', () => {
+    mockedUsePathname.mockReturnValue('/trending')
 
-    render(<NavbarItem title="Trending" param="fetchTrending" />)
+    render(<NavbarItem title="Trending" param="trending" />)
 
     const link = screen.getByRole('link', { name: 'Trending' })
     expect(link).toHaveClass('underline')
     expect(link).toHaveClass('decoration-primary')
+    expect(link).toHaveClass('text-primary')
   })
 
-  it('does not add active class when genre param does not match', () => {
-    mockedUseSearchParams.mockReturnValue({
-      get: () => 'fetchTopRated',
-    })
+  it('does not apply active class when pathname does not include param', () => {
+    mockedUsePathname.mockReturnValue('/top-rated')
 
-    render(<NavbarItem title="Trending" param="fetchTrending" />)
+    render(<NavbarItem title="Trending" param="trending" />)
 
     const link = screen.getByRole('link', { name: 'Trending' })
     expect(link).not.toHaveClass('underline')
