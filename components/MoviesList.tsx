@@ -37,7 +37,7 @@ export default function MoviesList({ movies }: { movies: Movie[] }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="bg-primary text-primary-foreground hover:text-black flex items-center gap-2 pointer-events-none"
+                  className="bg-primary text-primary-foreground hover:text-white flex items-center gap-2 pointer-events-none"
                 >
                   <FiInfo className="text-base" />
                   View Details
