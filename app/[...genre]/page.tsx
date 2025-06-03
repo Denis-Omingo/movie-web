@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { fetchMovies } from '@/lib/fetchMovies';
 import MoviesList from '@/components/MoviesList';
 import Pagination from '@/components/Pagination';
@@ -13,22 +14,21 @@ type GenreConfig =
   | { type: 'simple'; endpoint: string }
   | { type: 'genre'; endpoint: string; with_genres: string };
 
-type PageProps = {
-  searchParams: {
-    genre?: string;
-    page?: string;
-  };
-};
+export default async function GenrePage() {
+  const headersList = await headers();
+  const query = headersList.get('x-invoke-query') ?? '';
+  const url = new URL(`http://localhost?${query}`);
 
-export default async function GenrePage({ searchParams }: PageProps) {
-  const genreKey = (searchParams.genre as GenreKey) || 'trending';
+  const genreKey = (url.searchParams.get('genre') as GenreKey) || 'trending';
+  const page = parseInt(url.searchParams.get('page') || '1', 10);
   const config = genreMap[genreKey] as GenreConfig;
-  const page = parseInt(searchParams.page || '1', 10);
 
-  const movies =
-    config.type === 'genre'
-      ? await fetchMovies({ endpoint: config.endpoint, with_genres: config.with_genres, page })
-      : await fetchMovies({ endpoint: config.endpoint, page });
+  // ✅ FIXED: safely pass `with_genres` only if defined
+  const movies = await fetchMovies({
+    endpoint: config.endpoint,
+    page,
+    ...(config.type === 'genre' ? { with_genres: config.with_genres } : {}),
+  });
 
   return (
     <div className="space-y-6 p-4">
@@ -36,10 +36,7 @@ export default async function GenrePage({ searchParams }: PageProps) {
         {genreKey.replace('-', ' ')}
       </h1>
       <MoviesList movies={movies.results} />
-      <Pagination
-        currentPage={page}
-        totalPages={movies.total_pages}
-      />
+      <Pagination currentPage={page} totalPages={movies.total_pages} />
     </div>
   );
 }

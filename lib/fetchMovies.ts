@@ -1,3 +1,4 @@
+
 export async function fetchMovies({
   endpoint,
   page = 1,
@@ -5,15 +6,15 @@ export async function fetchMovies({
 }: {
   endpoint: string;
   page?: number;
-  with_genres?: string;
+  with_genres?: string | number;
 }) {
   const url = new URL(`https://api.themoviedb.org/3/${endpoint}`);
   url.searchParams.set('language', 'en-US');
   url.searchParams.set('page', page.toString());
   url.searchParams.set('api_key', process.env.TMDB_API_KEY!);
 
-  if (with_genres) {
-    url.searchParams.set('with_genres', with_genres);
+  if (with_genres !== undefined) {
+    url.searchParams.set('with_genres', String(with_genres));
   }
 
   const res = await fetch(url.toString(), {
