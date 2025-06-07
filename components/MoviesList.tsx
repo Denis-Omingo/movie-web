@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FiInfo } from 'react-icons/fi';
 
 type Movie = {
   id: number;
@@ -39,7 +38,7 @@ export default function MoviesList({ movies }: { movies: Movie[] }) {
                   size="sm"
                   className="bg-primary text-primary-foreground hover:text-white flex items-center gap-2 pointer-events-none"
                 >
-                  <FiInfo className="text-base" />
+          
                   View Details
                 </Button>
               </div>
